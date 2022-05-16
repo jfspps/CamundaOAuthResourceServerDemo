@@ -1,0 +1,17 @@
+camunda.bpm.admin-user:
+  id: hardware546
+  password: software983
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+
+logging:
+  level:
+    com.example: debug
+
+server:
+  port: 8081
