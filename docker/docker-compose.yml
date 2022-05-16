@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+
+  keycloak:
+    image: jboss/keycloak
+    depends_on:
+      - mysql
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: keycloakadmin123
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql
+      DB_USER: keycloakdb
+      DB_PASSWORD: keycloak
+      DB_PORT: "3306"
+      DB_DATABASE: keycloak
+    ports: 
+      - 8083:8080
+    networks:
+      - auth-network
+
+  mysql:
+    image: mysql:8
+    environment: 
+       MYSQL_ROOT_PASSWORD: mysqladmin123
+       MYSQL_USER: keycloakdb 
+       MYSQL_PASSWORD: keycloak
+       MYSQL_DATABASE: keycloak
+    ports: 
+      - 3307:3306
+    volumes:
+      - keycloak-db:/var/lib/mysql
+    networks:
+      - auth-network
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+      # https://stackoverflow.com/questions/55559386/how-to-fix-mbind-operation-not-permitted-in-mysql-error-log
+
+volumes:
+  keycloak-db:
+    driver: local
+
+networks:
+  auth-network:
+    driver: bridge

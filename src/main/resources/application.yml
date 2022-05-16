@@ -1,13 +1,11 @@
-camunda.bpm.admin-user:
-  id: hardware546
-  password: software983
-
 spring:
-  h2:
-    console:
-      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:mysql://localhost:3307/keycloak
+    username: keycloakdb
+    password: keycloak
 
 logging:
   level:
@@ -15,3 +13,30 @@ logging:
 
 server:
   port: 8081
+
+camunda:
+  bpm:
+    authorization:
+      enabled: true
+
+# Externalized Keycloak configuration
+keycloak:
+  # Keycloak access for the Identity Provider plugin.
+  url:
+    plugin: ${KEYCLOAK_URL_PLUGIN:http://localhost:8083}
+
+  # Keycloak Camunda Identity Client
+  client:
+    id: ${KEYCLOAK_CLIENT_ID:camunda-identity-service}
+    secret: ${KEYCLOAK_CLIENT_SECRET:Hn2dAmuIqFLxzBf8ovsNLPnFQ4TzwSAL}
+
+# Camunda Keycloak Identity Provider Plugin
+plugin:
+  identity:
+    keycloak:
+      keycloakIssuerUrl: ${keycloak.url.plugin}/auth/realms/Spring_demo
+      keycloakAdminUrl: ${keycloak.url.plugin}/auth/admin/realms/Spring_demo
+      clientId: ${keycloak.client.id}
+      clientSecret: ${keycloak.client.secret}
+      useEmailAsCamundaUserId: true
+      administratorGroupName: camunda-admin
