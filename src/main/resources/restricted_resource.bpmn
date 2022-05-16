@@ -31,7 +31,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Camunda_and_OAuth_demo">
       <bpmndi:BPMNShape id="TextAnnotation_0kgiijs_di" bpmnElement="TextAnnotation_0kgiijs">
-        <dc:Bounds x="610" y="80" width="100" height="68" />
+        <dc:Bounds x="580" y="50" width="100" height="68" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_090eds0_di" bpmnElement="Flow_090eds0">
         <di:waypoint x="610" y="200" />
@@ -58,8 +58,8 @@
         <dc:Bounds x="152" y="182" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1sb31s3_di" bpmnElement="Association_1sb31s3">
-        <di:waypoint x="598" y="160" />
-        <di:waypoint x="610" y="148" />
+        <di:waypoint x="581" y="160" />
+        <di:waypoint x="603" y="118" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
