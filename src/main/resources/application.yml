@@ -28,7 +28,7 @@ keycloak:
   # Keycloak Camunda Identity Client
   client:
     id: ${KEYCLOAK_CLIENT_ID:camunda-identity-service}
-    secret: ${KEYCLOAK_CLIENT_SECRET:Hn2dAmuIqFLxzBf8ovsNLPnFQ4TzwSAL}
+    secret: ${KEYCLOAK_CLIENT_SECRET:j6CjMTNhlVNFhhvuUvP4wEGgTlNjW07G}
 
 # Camunda Keycloak Identity Provider Plugin
 plugin:
