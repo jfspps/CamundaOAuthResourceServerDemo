@@ -24,7 +24,8 @@ As a reminder (please confirm from the included [docker-compose](docker/docker-c
 + This resource server is using port 8081
 + The demo client application is using port 8080
 
-The redirect URI for "camunda-identity-service" is 
+The redirect URIs for "camunda-identity-service" are `http://localhost:8081/login` and `http://localhost:8081/camunda/*`, noting we refer to
+the resource servers port 8081, not 8080.
 
 ## The basic idea
 
