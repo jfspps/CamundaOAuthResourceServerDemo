@@ -23,7 +23,13 @@ camunda:
 keycloak:
   # Keycloak access for the Identity Provider plugin.
   url:
+    # the authorisation server as HTTPS or HTTP
+#    plugin: ${KEYCLOAK_URL_PLUGIN:https://localhost:8084}
     plugin: ${KEYCLOAK_URL_PLUGIN:http://localhost:8083}
+    # SSO Authentication requests to authorisation server as HTTP. Send by application as redirect to the browser
+    auth: ${KEYCLOAK_URL_AUTH:http://localhost:8083}
+    # SSO Token requests to authorisation server as HTTP. Send from the application to Keycloak
+    token: ${KEYCLOAK_URL_TOKEN:http://localhost:8083}
 
   # Keycloak Camunda Identity Client
   client:
@@ -40,3 +46,37 @@ plugin:
       clientSecret: ${keycloak.client.secret}
       useEmailAsCamundaUserId: true
       administratorGroupName: camunda-admin
+      # enable user and group querying cache (defaults to 500 entries with lifetime of 15 mins)
+      cache-enabled: true
+      # for dev purposes
+      disableSSLCertificateValidation: true
+
+# Spring Boot Security OAuth2 SSO
+spring.security.oauth2:
+  client:
+    registration:
+      keycloak:
+        provider: keycloak
+        client-id: ${keycloak.client.id}
+        client-secret: ${keycloak.client.secret}
+        authorization-grant-type: authorization_code
+        redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+        scope: openid, profile, email
+    provider:
+      keycloak:
+        issuer-uri: ${keycloak.url.auth}/auth/realms/Spring_demo
+        authorization-uri: ${keycloak.url.auth}/auth/realms/Spring_demo/protocol/openid-connect/auth
+        user-info-uri: ${keycloak.url.auth}/auth/realms/Spring_demo/protocol/openid-connect/userinfo
+        token-uri: ${keycloak.url.token}/auth/realms/Spring_demo/protocol/openid-connect/token
+        jwk-set-uri: ${keycloak.url.token}/auth/realms/Spring_demo/protocol/openid-connect/certs
+        # set user-name-attribute one of:
+        # - sub                -> default; using keycloak ID as camunda user ID
+        # - email              -> useEmailAsCamundaUserId=true
+        # - preferred_username -> useUsernameAsCamundaUserId=true
+        user-name-attribute: email
+
+# Camunda Rest API
+rest.security:
+  enabled: true
+  provider: keycloak
+  required-audience: camunda-rest-api

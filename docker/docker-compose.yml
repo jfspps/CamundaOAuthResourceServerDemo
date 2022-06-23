@@ -15,8 +15,10 @@ services:
       DB_PASSWORD: keycloak
       DB_PORT: "3306"
       DB_DATABASE: keycloak
-    ports: 
+    ports:
+      # recall 8080 is Keycloak's http and 8443 is Keycloak's https
       - 8083:8080
+#      - 8084:8443
     networks:
       - auth-network
 

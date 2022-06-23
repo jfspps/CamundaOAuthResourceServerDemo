@@ -1,4 +1,4 @@
-package com.example.camundaoauthresourceserverdemo.security.oauth;
+package com.example.camundaoauthresourceserverdemo.security.oauth.plugin;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
