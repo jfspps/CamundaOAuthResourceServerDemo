@@ -19,8 +19,9 @@ logging:
     com.example: debug
 
 # Camunda Rest API
-rest.security:
-  enabled: true
+rest:
+  security:
+    enabled: true
 
 camunda:
   bpm:

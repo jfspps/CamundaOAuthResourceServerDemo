@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 @Configuration
 public class SecurityBeans {
 
+    // use this to connect to third-party identity providers
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         var client = clientRegistration();
