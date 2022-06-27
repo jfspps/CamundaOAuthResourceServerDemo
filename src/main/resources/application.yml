@@ -1,17 +1,38 @@
-camunda.bpm.admin-user:
-  id: hardware546
-  password: software983
-
 spring:
-  h2:
-    console:
-      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
   datasource:
-    url: jdbc:h2:mem:testdb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/keycloak
+    username: keycloakdb
+    password: keycloak
+
+server:
+  port: 8081
+  servlet:
+    # override the default root path /, in line with the redirect URI http://127.0.0.1:8081/camunda/*
+#    context-path: /camunda
 
 logging:
   level:
     com.example: debug
 
-server:
-  port: 8081
+# Camunda Rest API
+rest.security:
+  enabled: true
+
+camunda:
+  bpm:
+    admin-user:
+      id: camundawebadmin
+      password: admin123
+      first-name: James
+      last-name: Apps
+      email: james@mexuar.com
+    authorization:
+      enabled: true
+      tenant-check-enabled: false
+      filter:
+        create: All tasks
+      history-level: full
