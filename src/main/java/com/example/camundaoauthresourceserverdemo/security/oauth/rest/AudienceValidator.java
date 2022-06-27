@@ -1,4 +1,4 @@
-package com.example.camundaoauthresourceserverdemo.security.rest;
+package com.example.camundaoauthresourceserverdemo.security.oauth.rest;
 
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;

@@ -1,4 +1,4 @@
-package com.example.camundaoauthresourceserverdemo.security.rest;
+package com.example.camundaoauthresourceserverdemo.security.oauth.rest;
 
 import org.camunda.bpm.engine.IdentityService;
 import org.slf4j.Logger;

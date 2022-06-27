@@ -1,4 +1,4 @@
-package com.example.camundaoauthresourceserverdemo.security.oauth;
+package com.example.camundaoauthresourceserverdemo.security.oauth.sso;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.rest.security.auth.AuthenticationResult;

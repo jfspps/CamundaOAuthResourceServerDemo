@@ -5,7 +5,7 @@ can be secured behind an OAuth identity provider. This particular example is int
 
 See [here](https://github.com/jfspps/CamundaOAuthClientDemo) for an example client.
 
-Instructions on how to set up the resource (Camunda) and authorisation (Keycloak, see the [docker-compose](/docker/docker-compose.yml) script) 
+Instructions on how to set up the resource (specifically, configuring Camunda's web app with Keycloak) and authorisation (Keycloak, see the [docker-compose](/docker/docker-compose.yml) script) 
 servers was based on [this vital resource](https://github.com/camunda-community-hub/camunda-bpm-identity-keycloak).
 
 ## Reminder about how to initialise the solution
@@ -24,8 +24,9 @@ As a reminder (please confirm from the included [docker-compose](docker/docker-c
 + This resource server is using port 8081
 + The demo client application is using port 8080
 
-The redirect URIs for "camunda-identity-service" are `http://localhost:8081/login` and `http://localhost:8081/camunda/*`, noting we refer to
-the resource servers port 8081, not 8080.
+The redirect URIs for "camunda-identity-service" are `http://127.0.0.1:8081/login` and `http://127.0.0.1:8081/camunda/*`, noting we refer to
+the resource servers port 8081, not 8080. Also note that redirect URIs are treated as Strings (it seems) so `localhost` is NOT 
+the same as `127.0.0.1`.
 
 ## The basic idea
 
@@ -41,8 +42,8 @@ the web app, while releases post-version 2.7.0 provide examples of a secured RES
 
 ## Testing the secured Camunda web app
 
-Try to log in to Camunda Web App at `localhost:8081` and log in using the email address (that's the `useEmailAsCamundaUserId` 
-in [application.yml](/src/main/resources/application.yml)) of a user saved on Keycloak. 
+Try to log in to Camunda Web App at `localhost:8081/camunda` (check [application.yml](/src/main/resources/application.yml)) and log in using the email address (that's the `useEmailAsCamundaUserId` 
+in [application.yml](/src/main/resources/application.yml)) of a (Camunda admin) user saved on Keycloak. 
 These [instructions](https://github.com/camunda-community-hub/camunda-platform-7-keycloak/tree/master/examples/sso-kubernetes#optional-security-for-the-camunda-rest-api)
 were followed, along with careful inspection of the example code from [here](https://github.com/camunda-community-hub/camunda-platform-7-keycloak/tree/master/examples/sso-kubernetes).
 This includes custom SSO login and logout features. The [static resources](src/main/resources/META-INF/resources) are recognised by Spring [by default](https://www.baeldung.com/spring-mvc-static-resources)
@@ -53,3 +54,9 @@ and are JS scripts that look for specific elements and then replace them if foun
 For resource server version 2.6.7 and before, the [demo Camunda Client](https://github.com/jfspps/CamundaOAuthClientDemo) can 
 request resources from the resource server without needing to authenticate. This changes for resource server version 2.7.0 onwards; the 
 resource server returns an HTTP 401 Unauthorised response (authentication not completed) whenever the RESTful methods are invoked.
+
+## Work in progress
+
+It appears the plugin does not understand tenant IDs and on inspection, POSTMAN has been shown to authenticate and then 
+exchange an authorisation code, however the protected Camunda REST API asks for a tenant ID, when none is configured. Unfortunately, 
+the plugin and accompanying libraries do not support multitenancy.

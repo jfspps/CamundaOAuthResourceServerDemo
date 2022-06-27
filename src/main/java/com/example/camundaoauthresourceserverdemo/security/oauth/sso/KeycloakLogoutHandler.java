@@ -1,4 +1,4 @@
-package com.example.camundaoauthresourceserverdemo.security.oauth;
+package com.example.camundaoauthresourceserverdemo.security.oauth.sso;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

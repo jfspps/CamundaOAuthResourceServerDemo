@@ -1,4 +1,4 @@
-package com.example.camundaoauthresourceserverdemo.security.rest;
+package com.example.camundaoauthresourceserverdemo.security.oauth.rest;
 
 import org.camunda.bpm.engine.IdentityService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.jwt.*;
 import javax.inject.Inject;
 
 /**
- * Security Configuration for Camunda REST Api.
+ * Security Configuration for Camunda REST Api. This is run before the WebAppSecurityConfig.
  */
 @Configuration
 @EnableWebSecurity
@@ -50,6 +50,7 @@ public class RestApiSecurityConfig extends WebSecurityConfigurerAdapter {
         String jwkSetUri = applicationContext.getEnvironment().getRequiredProperty(
                 "spring.security.oauth2.client.provider." + configProps.getProvider() + ".jwk-set-uri");
 
+
         http
                 .csrf().ignoringAntMatchers("/api/**", "/engine-rest/**")
                 .and()
@@ -58,8 +59,7 @@ public class RestApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer()
-                .jwt().jwkSetUri(jwkSetUri)
-        ;
+                .jwt().jwkSetUri(jwkSetUri);
     }
 
     /**
