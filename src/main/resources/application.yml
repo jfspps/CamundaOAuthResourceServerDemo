@@ -23,6 +23,7 @@ camunda:
     filter:
       create: All tasks
     history-level: full
+    deployment-resource-pattern: classpath*:**/processes/*.bpmn
 
 # Externalized Keycloak configuration
 keycloak:
@@ -63,7 +64,7 @@ spring.security.oauth2:
         # - sub                -> default; using keycloak ID as camunda user ID
         # - email              -> useEmailAsCamundaUserId=true
         # - preferred_username -> useUsernameAsCamundaUserId=true
-        user-name-attribute: email
+        user-name-attribute: preferred_username
 
 # Camunda Rest API
 rest.security:
@@ -79,5 +80,7 @@ plugin:
       keycloakAdminUrl: ${keycloak.url.plugin}/auth/admin/realms/Spring_demo
       clientId: ${keycloak.client.id}
       clientSecret: ${keycloak.client.secret}
-      useEmailAsCamundaUserId: true
+      useUsernameAsCamundaUserId: true
+      useGroupPathAsCamundaGroupId: true
       administratorGroupName: camunda-admin
+      disableSSLCertificateValidation: true

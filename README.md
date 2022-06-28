@@ -34,20 +34,25 @@ the same as `127.0.0.1`.
 secured through its own identity service or via a third-party identity service.
 
 This project makes use of the [Camunda Identity Service plugin](https://github.com/camunda-community-hub/camunda-platform-7-keycloak).
-This plugin allows Camunda (as part of the Camunda resource server) to act as a client, having its own OAuth client credentials 
-on Keycloak's authorisation server. The name of the client in this case is "camunda-identity-service", under the realm "Spring_demo". (These
-[instructions](https://github.com/camunda-community-hub/camunda-platform-7-keycloak#prerequisites-in-your-keycloak-realm) were followed up to 
-and including the section on "Login Caching".) This account enables Camunda to offload its user's authentication credentials 
-to Keycloak while retaining control of the users and groups credentials that are listed in the Camunda web app Cockpit page.
-
-The work needed to secure the web app and secure the REST API are different. Version 2.6.7 of this resource server is configured to secure
-the web app, while releases post-version 2.7.0 provide examples of a secured REST API (this also includes SSO).
+This plugin allows Camunda's REST services (as part of the Camunda resource server) to act as a client, having its own OAuth client credentials 
+on Keycloak's authorisation server. The name of the client in this case is "camunda-identity-service", under the realm "Spring_demo" (see these
+[instructions](https://github.com/camunda-community-hub/camunda-platform-7-keycloak#prerequisites-in-your-keycloak-realm)).
+This account enables Camunda to offload its user's authentication credentials 
+to Keycloak while retaining control of the users and groups credentials that are listed in the Camunda web app Cockpit page. The Identity Service
+Provider implemented through the plugin grants read-only access, so it is not possible to push changes to Camunda via the web app
+or through POST/PUT/DELETE styled REST calls.
 
 ## Testing the secured Camunda web app
 
 Try to log in to Camunda Web App at `127.0.0.1:8081/` (check [application.yml](/src/main/resources/application.yml)) and 
-log in using the email address (that's the `useEmailAsCamundaUserId` in [application.yml](/src/main/resources/application.yml)) 
-of a (Camunda admin) user saved on Keycloak. 
+log in using 
+
++ the email address (if `useEmailAsCamundaUserId` is set to true in [application.yml](/src/main/resources/application.yml)) 
++ the username (if `useUsernameAsCamundaUserId` is set to true)
+ 
+of a (Camunda) user saved on Keycloak. If the user is not part of the camunda-admin group (see `administratorGroupName` in
+[application.yml](/src/main/resources/application.yml)) then they will get limited/no access to the cockpit, admin and task list
+panels.
 
 ## POSTMAN testing
 
