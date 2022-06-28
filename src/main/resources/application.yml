@@ -19,8 +19,9 @@ camunda:
     authorization:
       enabled: true
 #      tenant-check-enabled: false
-#    filter:
-#      create: All tasks
+#      enabled-for-custom-code: true
+    filter:
+      create: All tasks
     history-level: full
 
 # Externalized Keycloak configuration

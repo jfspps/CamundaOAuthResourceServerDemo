@@ -30,6 +30,9 @@ the same as `127.0.0.1`.
 
 ## The basic idea
 
+[This article](https://docs.camunda.io/docs/components/best-practices/operations/securing-camunda-c7/) explains how Camunda is
+secured through its own identity service or via a third-party identity service.
+
 This project makes use of the [Camunda Identity Service plugin](https://github.com/camunda-community-hub/camunda-platform-7-keycloak).
 This plugin allows Camunda (as part of the Camunda resource server) to act as a client, having its own OAuth client credentials 
 on Keycloak's authorisation server. The name of the client in this case is "camunda-identity-service", under the realm "Spring_demo". (These
@@ -58,4 +61,10 @@ are provided in the POSTMAN export.
 ## Work in progress
 
 Web App login confirmed; REST security is confirmed (HTTP 401 is returned without the JWT as part of the `Authorization` header)
-however the process invocation is missing a tenant id...
+however the process invocation is missing a tenant id. This is mentioned in the above 
+[article](https://docs.camunda.io/docs/components/best-practices/operations/securing-camunda-c7/#securing-camundas-rest-api).
+Multi-tenancy in Camunda is explained [here](https://docs.camunda.org/manual/latest/user-guide/process-engine/multi-tenancy/). 
+Essentially, the idea is to isolate users to particular process instances who all share the same engine.
+
+Also note that the logout does not appear to work. While the web app indicates that the logout was completed, the Keycloak 
+session was still present.
