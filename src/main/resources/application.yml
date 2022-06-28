@@ -3,12 +3,9 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3307/keycloak
     username: keycloakdb
     password: keycloak
-  jersey:
-    application-path: /engine-rest
 
 logging:
   level:
@@ -16,17 +13,14 @@ logging:
 
 server:
   port: 8081
-  servlet:
-    # override the default root path /, in line with the redirect URI http://127.0.0.1:8081/camunda/*
-    context-path: /camunda
 
 camunda:
   bpm:
     authorization:
       enabled: true
 #      tenant-check-enabled: false
-    filter:
-      create: All tasks
+#    filter:
+#      create: All tasks
     history-level: full
 
 # Externalized Keycloak configuration
@@ -45,21 +39,6 @@ keycloak:
   client:
     id: ${KEYCLOAK_CLIENT_ID:camunda-identity-service}
     secret: ${KEYCLOAK_CLIENT_SECRET:j6CjMTNhlVNFhhvuUvP4wEGgTlNjW07G}
-
-# Camunda Keycloak Identity Provider Plugin
-plugin:
-  identity:
-    keycloak:
-      keycloakIssuerUrl: ${keycloak.url.plugin}/auth/realms/Spring_demo
-      keycloakAdminUrl: ${keycloak.url.plugin}/auth/admin/realms/Spring_demo
-      clientId: ${keycloak.client.id}
-      clientSecret: ${keycloak.client.secret}
-      useEmailAsCamundaUserId: false
-      useUsernameAsCamundaUserId: true
-      useGroupPathAsCamundaGroupId: true
-      administratorGroupName: camunda-admin
-      # for dev purposes
-      disableSSLCertificateValidation: true
 
 # Spring Boot Security OAuth2 SSO
 spring.security.oauth2:
@@ -83,10 +62,21 @@ spring.security.oauth2:
         # - sub                -> default; using keycloak ID as camunda user ID
         # - email              -> useEmailAsCamundaUserId=true
         # - preferred_username -> useUsernameAsCamundaUserId=true
-        user-name-attribute: preferred_username
+        user-name-attribute: email
 
 # Camunda Rest API
 rest.security:
   enabled: true
   provider: keycloak
   required-audience: camunda-rest-api
+
+# Camunda Keycloak Identity Provider Plugin
+plugin:
+  identity:
+    keycloak:
+      keycloakIssuerUrl: ${keycloak.url.plugin}/auth/realms/Spring_demo
+      keycloakAdminUrl: ${keycloak.url.plugin}/auth/admin/realms/Spring_demo
+      clientId: ${keycloak.client.id}
+      clientSecret: ${keycloak.client.secret}
+      useEmailAsCamundaUserId: true
+      administratorGroupName: camunda-admin

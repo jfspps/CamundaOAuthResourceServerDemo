@@ -46,9 +46,9 @@ public class KeycloakAuthenticationFilter implements Filter {
 
         // Extract user-name-attribute of the JWT / OAuth2 token
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = null;
+        String userId;
         if (authentication instanceof JwtAuthenticationToken) {
-            userId = ((JwtAuthenticationToken)authentication).getName();
+            userId = authentication.getName();
         } else if (authentication.getPrincipal() instanceof OidcUser) {
             userId = ((OidcUser)authentication.getPrincipal()).getName();
         } else {

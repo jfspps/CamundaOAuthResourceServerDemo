@@ -71,8 +71,7 @@ public class RestApiSecurityConfig extends WebSecurityConfigurerAdapter {
         String issuerUri = applicationContext.getEnvironment().getRequiredProperty(
                 "spring.security.oauth2.client.provider." + configProps.getProvider() + ".issuer-uri");
 
-        NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
-                JwtDecoders.fromOidcIssuerLocation(issuerUri);
+        NimbusJwtDecoder jwtDecoder = JwtDecoders.fromOidcIssuerLocation(issuerUri);
 
         OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(configProps.getRequiredAudience());
         OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(issuerUri);

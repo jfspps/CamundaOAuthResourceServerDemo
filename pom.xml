@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>CamundaOAuthResourceServerDemo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>CamundaOAuthResourceServerDemo</name>
     <description>CamundaOAuthResourceServerDemo</description>
     <properties>
@@ -20,29 +20,52 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>2.7.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.camunda.bpm</groupId>
                 <artifactId>camunda-bom</artifactId>
                 <version>7.17.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+
+            <!-- temporarily fix deserialisation bug when parsing nested objects
+                 of Keycloak answer inside Spring Security init -->
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>oauth2-oidc-sdk</artifactId>
+                <version>9.12</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-dependencies</artifactId>
-            <version>2.7.0</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
+        </dependency>
+
+        <!-- Spring Security and Spring Boot's OAuth2 client and resource server -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
 
         <!--Database -->
@@ -61,18 +84,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!--Camunda -->
+        <!--Camunda KeyCloak plugin -->
         <dependency>
             <groupId>org.camunda.bpm.extension</groupId>
             <artifactId>camunda-platform-7-keycloak</artifactId>
             <version>7.17.0</version>
         </dependency>
 
+        <!-- Other Camunda dependencies -->
         <dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
             <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
             <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
@@ -82,7 +105,6 @@
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine-plugin-spin</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-dataformat-all</artifactId>
@@ -100,20 +122,11 @@
             <version>2.2.3</version>
         </dependency>
 
-        <!-- Spring Security and Spring Boot's OAuth2 client and resource server -->
+        <!-- Required to run with Java 11 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
