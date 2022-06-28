@@ -48,7 +48,7 @@ of a (Camunda admin) user saved on Keycloak.
 
 ## POSTMAN testing
 
-Please see [here](Camunda Demo.postman_collection.json) for an example set of requests which follow the OAuth 
+Please see [here](/Camunda Demo.postman_collection.json) for an example set of requests which follow the OAuth 
 Authorisation Code Grant workflow.
 
 When logging in to request an authorisation code, enter the username (not the email address). Currently, the BPMN process
