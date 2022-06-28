@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "becb8eab-3bdf-4508-98ab-194cc82e96b2",
+		"name": "Camunda Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14524245"
+	},
+	"item": [
+		{
+			"name": "Authorisation Code Grant workflow (developers) Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/auth/realms/Spring_demo/protocol/openid-connect/auth?client_id=camunda-identity-service&response_type=code&scope=openid profile&redirect_uri=http://127.0.0.1:8081/login&state=blablabla12345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"auth",
+						"realms",
+						"Spring_demo",
+						"protocol",
+						"openid-connect",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "camunda-identity-service",
+							"description": "This is the ID of the client that requires user authentication"
+						},
+						{
+							"key": "response_type",
+							"value": "code",
+							"description": "This instructs Keycloak what to respond with"
+						},
+						{
+							"key": "scope",
+							"value": "openid profile",
+							"description": "This is mostly for OpenID"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://127.0.0.1:8081/login"
+						},
+						{
+							"key": "state",
+							"value": "blablabla12345",
+							"description": "Use this as a token tied to the current client; if the response for state differs then the response is coming from someone-else"
+						}
+					]
+				},
+				"description": "Update the query params as needed and then enter the completed URL into a browser\n\nThe URL applies to KeyCloak v17 onwards\n\nUse the state parameter as a form of vaildation: make sure that it was you that sent the request for the code (sent as part of the redirect)"
+			},
+			"response": []
+		},
+		{
+			"name": "Exchange Code for Access token (developers)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "camunda-identity-service",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "j6CjMTNhlVNFhhvuUvP4wEGgTlNjW07G",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "541df8bf-e3a1-4376-81dc-c8bbb56d81c2.7ed1ea33-4b3f-492f-a966-18696121f243.ea2e2d5d-ad21-4a60-89b8-4b3357e3e23c",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://127.0.0.1:8081/login",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8083/auth/realms/Spring_demo/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"auth",
+						"realms",
+						"Spring_demo",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Camunda process definition",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXRGhfa3E2ejhOQUs2MUZkeE9zbzBXMzJpaGpQa3VReWUxWENCWi1ZNWtJIn0.eyJleHAiOjE2NTY0MTI0MjgsImlhdCI6MTY1NjQxMjEyOCwiYXV0aF90aW1lIjoxNjU2NDEyMTE1LCJqdGkiOiI0Y2IxOWYxNi1iMDFlLTRlOTAtOWVhYi1iNTlmZjU2OTFkMDciLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODMvYXV0aC9yZWFsbXMvU3ByaW5nX2RlbW8iLCJhdWQiOlsiY2FtdW5kYS1yZXN0LWFwaSIsImFjY291bnQiXSwic3ViIjoiYjgxOTdlMmYtMjdjZC00YTlhLWJkOTctZGJmYmMwMDllZGY0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2FtdW5kYS1pZGVudGl0eS1zZXJ2aWNlIiwic2Vzc2lvbl9zdGF0ZSI6IjdlZDFlYTMzLTRiM2YtNDkyZi1hOTY2LTE4Njk2MTIxZjI0MyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1zcHJpbmdfZGVtbyIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGNhbXVuZGEtcmVzdC1hcGkgZW1haWwiLCJzaWQiOiI3ZWQxZWEzMy00YjNmLTQ5MmYtYTk2Ni0xODY5NjEyMWYyNDMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImNhbXVuZGFfYWRtaW4iLCJlbWFpbCI6ImNhbXVuZGFhZG1pbkBtZXh1YXIuY29tIn0.WcNvjJY_hNb5Xk0ckL9wDQ6HTwT-PpacFfAttD7rnwMFuZgNNFXryV0A8XNlCMhXo5_zQSgduipYvvIDvcp-cxxZpaydQ3uuzAmo2iC8SJy1vCj7g4Rliu6_K8UbOtallBbWLxc_wJ8wRbE-Uxn8n4WhrpMTrS9g1oVwaiZn-q0a7BJIDPlqdXJGZlid-_NNjkVl6eHUwAiHIk1S1N6PEEHxjvH1tVogZhcPYjxFjze5lfsb8F5KShGD7c2hUjpiHMS0TmjU0BEV2YqJ-Oa81uIlyqxRLyHLV5QU0YcKkZIxCvV8e3a3rF4iyiblQ8YMKYMd4H-bP8jfJNsEMLO40w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"variables\":\n    {\n        \"username\": {\"value\": \"Unsecured user\"}\n    },\n    \"withVariablesInReturn\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8081/engine-rest/process-definition/key/Camunda_and_OAuth_demo/submit-form",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8081",
+					"path": [
+						"engine-rest",
+						"process-definition",
+						"key",
+						"Camunda_and_OAuth_demo",
+						"submit-form"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Camunda process definition with tenant ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXRGhfa3E2ejhOQUs2MUZkeE9zbzBXMzJpaGpQa3VReWUxWENCWi1ZNWtJIn0.eyJleHAiOjE2NTY0MTI0MjgsImlhdCI6MTY1NjQxMjEyOCwiYXV0aF90aW1lIjoxNjU2NDEyMTE1LCJqdGkiOiI0Y2IxOWYxNi1iMDFlLTRlOTAtOWVhYi1iNTlmZjU2OTFkMDciLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODMvYXV0aC9yZWFsbXMvU3ByaW5nX2RlbW8iLCJhdWQiOlsiY2FtdW5kYS1yZXN0LWFwaSIsImFjY291bnQiXSwic3ViIjoiYjgxOTdlMmYtMjdjZC00YTlhLWJkOTctZGJmYmMwMDllZGY0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2FtdW5kYS1pZGVudGl0eS1zZXJ2aWNlIiwic2Vzc2lvbl9zdGF0ZSI6IjdlZDFlYTMzLTRiM2YtNDkyZi1hOTY2LTE4Njk2MTIxZjI0MyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1zcHJpbmdfZGVtbyIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGNhbXVuZGEtcmVzdC1hcGkgZW1haWwiLCJzaWQiOiI3ZWQxZWEzMy00YjNmLTQ5MmYtYTk2Ni0xODY5NjEyMWYyNDMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImNhbXVuZGFfYWRtaW4iLCJlbWFpbCI6ImNhbXVuZGFhZG1pbkBtZXh1YXIuY29tIn0.WcNvjJY_hNb5Xk0ckL9wDQ6HTwT-PpacFfAttD7rnwMFuZgNNFXryV0A8XNlCMhXo5_zQSgduipYvvIDvcp-cxxZpaydQ3uuzAmo2iC8SJy1vCj7g4Rliu6_K8UbOtallBbWLxc_wJ8wRbE-Uxn8n4WhrpMTrS9g1oVwaiZn-q0a7BJIDPlqdXJGZlid-_NNjkVl6eHUwAiHIk1S1N6PEEHxjvH1tVogZhcPYjxFjze5lfsb8F5KShGD7c2hUjpiHMS0TmjU0BEV2YqJ-Oa81uIlyqxRLyHLV5QU0YcKkZIxCvV8e3a3rF4iyiblQ8YMKYMd4H-bP8jfJNsEMLO40w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"variables\":\n    {\n        \"username\": {\"value\": \"Unsecured user\"}\n    },\n    \"withVariablesInReturn\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8081/engine-rest/process-definition/key/Camunda_and_OAuth_demo/tenant-id/null/submit-form",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8081",
+					"path": [
+						"engine-rest",
+						"process-definition",
+						"key",
+						"Camunda_and_OAuth_demo",
+						"tenant-id",
+						"null",
+						"submit-form"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Process instance variables (comprehensive history) Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXRGhfa3E2ejhOQUs2MUZkeE9zbzBXMzJpaGpQa3VReWUxWENCWi1ZNWtJIn0.eyJleHAiOjE2NTYwNzYyNzQsImlhdCI6MTY1NjA3NTk3NCwiYXV0aF90aW1lIjoxNjU2MDc1OTUyLCJqdGkiOiIwM2Y0YTQ0Yi0xNDZhLTQ5NWItYjBiMy1kYWFhYjgwZmNkMTAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODMvYXV0aC9yZWFsbXMvU3ByaW5nX2RlbW8iLCJhdWQiOlsiY2FtdW5kYS1yZXN0LWFwaSIsImFjY291bnQiXSwic3ViIjoiNmU4MjkxNTYtMzMwMy00ODcwLThjNjQtZTRlNTVkOTMxN2NlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2FtdW5kYS1pZGVudGl0eS1zZXJ2aWNlIiwic2Vzc2lvbl9zdGF0ZSI6IjIyNThmYzBlLWJjM2ItNGM2ZC05MWUxLTFhZWQzNWI4N2U1NyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1zcHJpbmdfZGVtbyIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGNhbXVuZGEtcmVzdC1hcGkgZW1haWwiLCJzaWQiOiIyMjU4ZmMwZS1iYzNiLTRjNmQtOTFlMS0xYWVkMzViODdlNTciLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJKYW1lcyBBcHBzIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiamFwcHMiLCJnaXZlbl9uYW1lIjoiSmFtZXMiLCJmYW1pbHlfbmFtZSI6IkFwcHMiLCJlbWFpbCI6ImphbWVzQG1leHVhci5jb20ifQ.VbZQFV84p2nsIvCgbnwF0IxPiWlvkR57Kt3eDRFM0BgmW51YdMfFL9tz7i1xeZh4RkD44q3_Uxf6tyJyVjBydzMeXllJhf87hxcLfgbNSZbE6rFFObSk1NI4L828vR_V8H5cqiF2bMTNMA665FDKMUhBmI0wQmTJ7cxj9EZhkuwwe28cSBuJX6q3lKAkrgvxVZfGO7SyJAg_4BwB4PnWUKzn_cuyuCraWLZd0F2cdJqK8ZPPEZQgslk0LWKPUjEO_50GPwxZRj99USu_8oOtl_pYtPlmj7Zwy2lvbFtSj8U7d2lOd888WnRqH6HLWQ_CV9lEhAVQClTJAQh5fb1OeA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8081/camunda/engine-rest/history/variable-instance?processInstanceId=001b692e-f3b1-11ec-a416-c2c80098ad53",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8081",
+					"path": [
+						"camunda",
+						"engine-rest",
+						"history",
+						"variable-instance"
+					],
+					"query": [
+						{
+							"key": "processInstanceId",
+							"value": "001b692e-f3b1-11ec-a416-c2c80098ad53"
+						}
+					]
+				},
+				"description": "Use this to retrieve a comprehensive list of all submitted process variables for the given process instance id (as the query parameter) at any time. This works for ACTIVE as well as COMPLETED processes.\n\nThe key fields to look out for in the response are:\n\n*   name (effectively the key of a key-value pair)\n*   value\n*   type\n    \n\nPlease refer to the accompanying spreadsheet for more info on each process variable.\n\nWhen a user task is completed (POST /task), the process variables are normally sent in the response and so it is probably not necessary to run this GET request too often."
+			},
+			"response": []
+		}
+	]
+}

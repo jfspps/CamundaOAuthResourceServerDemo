@@ -46,6 +46,16 @@ Try to log in to Camunda Web App at `127.0.0.1:8081/` (check [application.yml](/
 log in using the email address (that's the `useEmailAsCamundaUserId` in [application.yml](/src/main/resources/application.yml)) 
 of a (Camunda admin) user saved on Keycloak. 
 
+## POSTMAN testing
+
+Please see [here](Camunda Demo.postman_collection.json) for an example set of requests which follow the OAuth 
+Authorisation Code Grant workflow.
+
+When logging in to request an authorisation code, enter the username (not the email address). Currently, the BPMN process
+cannot execute because we are missing a tenant id associated with the user. Two endpoints, one with and one without tenant id,
+are provided in the POSTMAN export.
+
 ## Work in progress
 
-Web App login confirmed; REST security is next...
+Web App login confirmed; REST security is confirmed (HTTP 401 is returned without the JWT as part of the `Authorization` header)
+however the process invocation is missing a tenant id...
